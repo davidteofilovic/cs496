@@ -1,0 +1,109 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Star a Gist",
+		"_postman_id": "fa9390dd-4e2c-5308-0c4b-f9ed87aea466",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Star Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status 204\"] = responseCode.code === 204;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists/{{create_and_match_id}}\n/star?access_token=7a511fb03b558d00eb791893d0cb4b21261424cd",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"star"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "7a511fb03b558d00eb791893d0cb4b21261424cd",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Length",
+						"value": "0",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Star",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"returns 204\"] = responseCode.code === 204"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists/{{create_and_match_id}}/star?access_token={{access_token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"{{create_and_match_id}}",
+						"star"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "{{access_token}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

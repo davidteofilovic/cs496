@@ -1,0 +1,83 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Create & Match",
+		"_postman_id": "d1671e0e-a7c5-5742-f481-c204b74e9eb5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"var response = JSON.parse(responseBody);",
+							"postman.clearGlobalVariable(\"create_and_match_id\", response.id);",
+							"postman.setGlobalVariable(\"create_and_match_id\", response.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists?access_token=7a511fb03b558d00eb791893d0cb4b21261424cd",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "7a511fb03b558d00eb791893d0cb4b21261424cd",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"description\": \"My second ever Gist!\", \"public\": true, \"files\": {\"examplefile\": {\"content\": \"{{gist_text}}\" }}}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Text of Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var response = JSON.parse(responseBody); ",
+							"tests[\"Check gist text\"] = response.files.examplefile.content === postman.getGlobalVariable(\"gist_text\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{create_and_match_id}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

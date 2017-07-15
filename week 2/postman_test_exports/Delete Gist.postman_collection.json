@@ -1,0 +1,155 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Delete Gist",
+		"_postman_id": "920f7477-ad9a-9252-be67-c4b0826402f2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"var response = JSON.parse(responseBody);",
+							"postman.clearGlobalVariable(\"delete_gist\", response.id);",
+							"postman.setGlobalVariable(\"delete_gist\", response.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists?access_token=7a511fb03b558d00eb791893d0cb4b21261424cd",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "7a511fb03b558d00eb791893d0cb4b21261424cd",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"description\": \"My second evers Gist!\", \"public\": true, \"files\": {\"example3.txt\": {\"content\": \"This Gist will get deleted\"}}}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get # of gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"count_gists\", response.length);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/users/davidteofilovic/gists",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"gist was deleted\"] = responseCode.code === 204;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists/{{delete_gist}}?access_token={{access_token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"{{delete_gist}}"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "{{access_token}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get # of gists - 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"tests[\"check if count went down\"] = (postman.getEnvironmentVariable(\"count_gists\") - 1) === response.length;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/users/davidteofilovic/gists",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

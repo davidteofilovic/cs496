@@ -1,0 +1,115 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Create Gist",
+		"_postman_id": "0684ac50-2069-97dd-f271-81f3f7941c3a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Before Addition",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var response = JSON.parse(responseBody);",
+							"postman.clearGlobalVariable(\"before_creation\", response.length);",
+							"postman.setGlobalVariable(\"before_creation\", response.length);",
+							"postman.setNextRequest(\"Create Gist\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/users/davidteofilovic/gists",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Set up global values so they can be compared to after"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"postman.setNextRequest(\"After Addition\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists?access_token=7a511fb03b558d00eb791893d0cb4b21261424cd",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "7a511fb03b558d00eb791893d0cb4b21261424cd",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"description\": \"My second evers Gist!\", \"public\": true, \"files\": {\"example3.txt\": {\"content\": \"This is a Gist\"}}}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "After Addition",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var response = JSON.parse(responseBody);",
+							"postman.clearGlobalVariable(\"after_creation\", response.length);",
+							"postman.setGlobalVariable(\"after_creation\", response.length);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/users/davidteofilovic/gists",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Set up global values so they can be compared to after"
+			},
+			"response": []
+		}
+	]
+}

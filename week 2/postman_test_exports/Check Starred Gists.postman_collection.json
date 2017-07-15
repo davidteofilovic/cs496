@@ -1,0 +1,56 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Check Starred Gists",
+		"_postman_id": "c6a45a70-a65d-c886-0222-0a5e914ca976",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all Starred Gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"confirm status 200\"] = responseCode.code === 200;",
+							"var response = JSON.parse(responseBody);",
+							"tests[\"confirm one starred gist\"] = response.length === 1;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists/starred?access_token={{access_token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"starred"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "{{access_token}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

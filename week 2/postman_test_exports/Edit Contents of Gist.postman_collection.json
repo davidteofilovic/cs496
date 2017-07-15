@@ -1,0 +1,92 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Edit Contents of Gist",
+		"_postman_id": "d1d0e033-89d3-1509-0446-837811d1f7a5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Edit Gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status 200\"] = responseCode.code === 200;",
+							"postman.setNextRequest(\"Check Edit\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var randEdit = Math.floor((Math.random() * 1000) + 1);",
+							"postman.setGlobalVariable(\"randEdit\", randEdit);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://api.github.com/gists/{{create_and_match_id}}?access_token=7a511fb03b558d00eb791893d0cb4b21261424cd",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"{{create_and_match_id}}"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "7a511fb03b558d00eb791893d0cb4b21261424cd",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"description\": \"My second evers Gist!\", \"files\": {\"examplefile\": {\"content\": \"{{randEdit}}\"}}}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Edit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status 200\"] = responseCode.code === 200;",
+							"var response = JSON.parse(responseBody);",
+							"tests[\"check edit\"] = postman.getGlobalVariable(\"randEdit\") === response[\"files\"][\"examplefile\"][\"content\"];"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{create_and_match_id}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
